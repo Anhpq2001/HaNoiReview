@@ -9,6 +9,7 @@ import Models.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
  * @author anhph
  */
 public class UserService {
+
     UserDAO userDAO = new UserDAO();
 
     public void signIn(HttpServletRequest request, HttpServletResponse response) {
@@ -26,21 +28,28 @@ public class UserService {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
         User user = userDAO.getOne(account, password);
-        if(Objects.isNull(user)){
+        if (Objects.isNull(user)) {
             try {
                 errorMessage = "Account or Password incorect!";
-                request.setAttribute("errorMessage", errorMessage);
-                request.getRequestDispatcher("/home?action=signin").forward(request, response);
-            } catch (ServletException | IOException ex) {
+                //request.setAttribute("errorMessage", errorMessage); // to do
+                response.sendRedirect("home?action=signin");
+            } catch (IOException ex) {
                 Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
+        } else {
             try {
-                request.getRequestDispatcher("/home").forward(request, response);
-            } catch (ServletException | IOException ex) {
+                HttpSession session = request.getSession();
+//                if(user.isIsAdmin() == true){
+//                    session.setAttribute("admin", user);
+//                }else{
+//                    session.setAttribute("user", user);
+//                }
+                session.setAttribute("user", user);
+                response.sendRedirect("home");
+            } catch (IOException ex) {
                 Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }    
+        }
     }
 
     public void signOut(HttpServletRequest request, HttpServletResponse response) {
@@ -62,5 +71,5 @@ public class UserService {
     public void changeProfile(HttpServletRequest request, HttpServletResponse response) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

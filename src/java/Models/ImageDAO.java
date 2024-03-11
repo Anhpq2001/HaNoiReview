@@ -12,27 +12,35 @@ import java.util.List;
  *
  * @author anhph
  */
-public class ImageDAO extends DBContext{
+public class ImageDAO extends DBContext {
+
     Connection con = connection;
     PreparedStatement stm;
     ResultSet rs;
-    
-    private final String GET_ALL = "";
+
+    private final String GET_ALL = "SELECT [ImageID]\n"
+            + "      ,[PostID]\n"
+            + "      ,[ImageURL]\n"
+            + "  FROM [dbo].[Images]";
     private final String GET_ONE = "";
     private final String INSERT = "";
     private final String UPDATE = "";
     private final String DELETE = "";
-    
-    public List<Image> getAll(){
+
+    public List<Image> getAll() {
         return null;
     }
-    public Image getOne(int id){
+
+    public Image getOne(int id) {
         return null;
-    }    
-    public void insert(Image image){
     }
-    public void update(Image image){ 
+
+    public void insert(Image image) {
     }
-    public void delete(int id){
+
+    public void update(Image image) {
+    }
+
+    public void delete(int id) {
     }
 }

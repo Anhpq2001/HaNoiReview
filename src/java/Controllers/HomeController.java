@@ -67,8 +67,16 @@ public class HomeController extends HttpServlet {
             case "":
                 homeService.displayHome(request, response);
                 break;
+            case "displayalluser":
+                homeService.displayAllUser(request, response);
+                break;
+            case "displayallpost":
+                homeService.displayAllPost(request, response);
             case "signin":
                 homeService.displaySignIn(request, response);
+            case "profile":
+                homeService.displayProfile(request, response);
+                break;    
         }
     }
 
@@ -83,7 +91,24 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        if(Objects.isNull(action)){
+            action = "";
+        }
+        switch (action) {
+            case "comment":
+                homeService.insertComment(request, response);
+                break;
+            case "post":
+                homeService.insertPost(request, response);
+                break;
+            case "manageuser":
+                homeService.manageUser(request, response);
+                break;
+            case "managepost":
+                homeService.managePost(request, response);
+                break;
+        }
     }
 
     /**
