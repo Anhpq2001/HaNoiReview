@@ -1,0 +1,145 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 12, 2024, 9:24:16 AM
+    Author     : anhph
+*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,200;1,400;1,500&display=swap');
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    font-family:'Poppins', sans-serif;
+    cursor: pointer;
+}
+#wrapper{
+    width: 100%;
+    height: 100vh;
+    
+}
+#header{
+    padding: 0px 30px;
+    margin-top: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo{
+    margin: 0px 40px;
+    width: 30px;
+}
+#header input{
+    border-radius: 20px;
+}
+#logouser{
+    margin-right: 40px;
+    width: 40px;
+    height: 40px;
+}
+#search{
+    width: 500px;
+}
+#searchbutton{
+    width: 100px;
+}
+#searchbutton:hover {
+    background: antiquewhite;
+}
+#menu{
+    list-style: none;
+    display: flex;
+}
+#menu .item{
+    margin:0px 5px;
+}
+#menu .item a {
+    color:#626A67;
+    text-decoration: none;
+}
+#actions {
+    display: flex;
+}
+
+#actions .item {
+    margin-left: 40px;
+}
+
+#banner {
+    width: 100%;
+    background-image :url("../ImageSystem/banner.jpg");
+    height: 550px;
+    margin-top:0px;
+    display: flex;
+    padding:0px 133px;
+    position:relative;
+    
+}
+#banner  .box-left h2 {
+    font-size:48px;
+    margin-top:330px;
+    color: aqua;
+}
+#banner .box-left p {
+    color: background;
+}
+
+#menu2{
+    padding: 0px 30px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#menu2{
+    list-style: none;
+    display: flex;
+}
+#menu2 .item{
+    margin:0px 5px;
+}
+#menu2 .item a {
+    color:#626A67;
+    text-decoration: none;
+    margin: 0px 30px;
+}
+#content{
+    margin-top: 30px; 
+    
+}
+#content .contentitem{
+    margin:10px 140px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    
+}
+#content .contentitem p{
+    margin: 5px;
+    margin-left: 20px;
+}
+
+#footer {
+    width: 100%;
+    background:rgb(0,0,0,0.79);
+    height: 200px;
+    margin-top:100px;
+    padding:0px 63px;
+    padding-top:57px;
+    display: flex;
+    justify-content: space-around;
+}
+#footer .box {
+    width: 100%;
+    color: #fff;
+    display: flex;
+    justify-content: start;
+    flex-wrap: nowrap; /* Ngăn các phần tử trong .box xuống dòng */
+}
+#footer .box p{
+    margin-top: 20px;
+}
+#footer .infor{
+    color: white;
+    margin-right: 50px;
+}

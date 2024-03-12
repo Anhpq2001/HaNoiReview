@@ -6,14 +6,18 @@ package Models;
 
 import dal.DBContext;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author anhph
  */
 public class PostDAO extends DBContext {
-
+    CategoryDAO categoryDAO = new CategoryDAO();
+    
     Connection con = connection;
     PreparedStatement stm;
     ResultSet rs;
@@ -28,16 +32,64 @@ public class PostDAO extends DBContext {
             + "      ,[ViewCount]\n"
             + "      ,[IsDelete]\n"
             + "  FROM [dbo].[Posts]";
-    private final String GET_ONE = "";
+    private final String GET_ONE = "SELECT [PostID]\n"
+            + "      ,[CategoryID]\n"
+            + "      ,[Title]\n"
+            + "      ,[Content]\n"
+            + "      ,[CreatedAt]\n"
+            + "      ,[UpdatedAt]\n"
+            + "      ,[LikeCount]\n"
+            + "      ,[ViewCount]\n"
+            + "      ,[IsDelete]\n"
+            + "  FROM [dbo].[Posts]\n"
+            + "  WHERE [PostID]=?";
     private final String INSERT = "";
     private final String UPDATE = "";
     private final String DELETE = "";
 
     public List<Post> getAll() {
-        return null;
+        List<Post> posts = new ArrayList<>();
+        try {
+            stm = con.prepareStatement(GET_ALL);
+            rs = stm.executeQuery();
+            while(rs.next()){
+                Post post = new Post();
+                post.setCategory(categoryDAO.getOne(rs.getInt(1)));
+                post.setTitle(rs.getString(2));
+                post.setContent(rs.getString(3));
+                post.setCreatedAt(rs.getDate(4));
+                post.setUpdatedAt(rs.getDate(5));
+                post.setLikeCount(rs.getInt(6));
+                post.setViewCount(rs.getInt(7));
+                post.setIsDelete(rs.getBoolean(8));
+                posts.add(post);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return posts;
     }
 
     public Post getOne(int id) {
+        Post post = new Post();
+        try {
+            stm = con.prepareStatement(GET_ONE);
+            stm.setInt(1, id);
+            rs = stm.executeQuery();
+            if(rs.next()){
+                post.setCategory(categoryDAO.getOne(rs.getInt(1)));
+                post.setTitle(rs.getString(2));
+                post.setContent(rs.getString(3));
+                post.setCreatedAt(rs.getDate(4));
+                post.setUpdatedAt(rs.getDate(5));
+                post.setLikeCount(rs.getInt(6));
+                post.setViewCount(rs.getInt(7));
+                post.setIsDelete(rs.getBoolean(8));
+                return post;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 

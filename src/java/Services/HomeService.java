@@ -4,11 +4,24 @@
  */
 package Services;
 
+import Models.Category;
+import Models.CategoryDAO;
+import Models.Comment;
+import Models.CommentDAO;
+import Models.Image;
+import Models.ImageDAO;
+import Models.Post;
+import Models.PostDAO;
+import Models.User;
+import Models.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,20 +30,67 @@ import java.util.logging.Logger;
  * @author anhph
  */
 public class HomeService {
-     
+
+    UserDAO userDAO = new UserDAO();
+    PostDAO postDAO = new PostDAO();
+    CategoryDAO categoryDAO = new CategoryDAO();
+    ImageDAO imageDAO = new ImageDAO();
+    CommentDAO commentDAO = new CommentDAO();
+
     public void displayHome(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
-            String choice = session.getAttribute("user").toString();
-            if(choice.equals(true)){
-                // hien thi trang home cua admin
-            }else if(choice.equals("false")){
-                // hien thi trang home cua user da dang nhap
-            }else{
+            User user = (User) session.getAttribute("user");
+            List<Post> posts = new ArrayList<>();
+            List<User> users = new ArrayList<>();
+            List<Image> images = new ArrayList<>();
+            List<Category> categories = new ArrayList<>();
+            List<Comment> comments = new ArrayList<>();
+            if (Objects.isNull(user)) {
                 // hien thi trang home cua user chua dang nhap
-                
+                posts = postDAO.getAll();
+                images = imageDAO.getAll();
+                categories = categoryDAO.getAll();
+                comments = commentDAO.getAll();
+                request.setAttribute("posts", posts);
+                request.setAttribute("comments", comments);
+                request.setAttribute("images", images);
+                request.setAttribute("categories", categories);
+                request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
+            if (user.isIsAdmin() == true) {
+                // hien thi trang home cua admin
+                posts = postDAO.getAll();
+                users = userDAO.getAll();
+                images = imageDAO.getAll();
+                categories = categoryDAO.getAll();
+                comments = commentDAO.getAll();
+                request.setAttribute("users", users);
+                request.setAttribute("user", user);
+                request.setAttribute("posts", posts);
+                request.setAttribute("comments", comments);
+                request.setAttribute("images", images);
+                request.setAttribute("categories", categories);
+
+            }
+            if (user.isIsAdmin() == false) {
+                // hien thi trang home cua user da dang nhap
+                posts = postDAO.getAll();
+                images = imageDAO.getAll();
+                categories = categoryDAO.getAll();
+                comments = commentDAO.getAll();
+                request.setAttribute("posts", posts);
+                request.setAttribute("comments", comments);
+                request.setAttribute("images", images);
+                request.setAttribute("categories", categories);
+            }
+//            request.setAttribute("users", users);
+//            request.setAttribute("user", user);
+//            request.setAttribute("posts", posts);
+//            request.setAttribute("comments", comments);
+//            request.setAttribute("images", images);
+//            request.setAttribute("categories", categories);
+//            request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,7 +103,7 @@ public class HomeService {
     public void displayAllUser(HttpServletRequest request, HttpServletResponse response) {
         // cho phep admin xem danh sach cac user da dang nhap
     }
-    
+
     public void displaySignIn(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.getRequestDispatcher("/Views/signin.jsp").forward(request, response);
@@ -73,9 +133,4 @@ public class HomeService {
         // an hoac comment them duoi account admin
     }
 
-    
-
-    
-
-    
 }

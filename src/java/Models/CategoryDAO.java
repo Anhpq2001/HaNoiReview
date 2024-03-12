@@ -6,7 +6,10 @@ package Models;
 
 import dal.DBContext;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,16 +28,56 @@ public class CategoryDAO extends DBContext {
             + "      ,[UpdatedAt]\n"
             + "      ,[IsDelete]\n"
             + "  FROM [dbo].[Categories]";
-    private final String GET_ONE = "";
+    private final String GET_ONE = "SELECT [CategoryID]\n"
+            + "      ,[Name]\n"
+            + "      ,[Description]\n"
+            + "      ,[CreatedAt]\n"
+            + "      ,[UpdatedAt]\n"
+            + "      ,[IsDelete]\n"
+            + "  FROM [dbo].[Categories]\n"
+            + "  WHERE [CategoryID]=?";
     private final String INSERT = "";
     private final String UPDATE = "";
     private final String DELETE = "";
 
     public List<Category> getAll() {
-        return null;
+        List<Category> categories = new ArrayList<>();
+        try {
+            stm = con.prepareStatement(GET_ALL);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Category category = new Category();
+                category.setName(rs.getString(1));
+                category.setDescription(rs.getString(2));
+                category.setCreatedAt(rs.getDate(3));
+                category.setUpdatedAt(rs.getDate(4));
+                category.setIsDelete(rs.getBoolean(5));
+                categories.add(category);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return categories;
     }
 
     public Category getOne(int id) {
+        Category category = new Category();
+        try {
+            stm = con.prepareStatement(GET_ONE);
+            stm.setInt(1, id);
+            rs = stm.executeQuery();
+            if(rs.next()){
+                category.setName(rs.getString(1));
+                category.setDescription(rs.getString(2));
+                category.setCreatedAt(rs.getDate(3));
+                category.setUpdatedAt(rs.getDate(4));
+                category.setIsDelete(rs.getBoolean(5));
+                return category;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 

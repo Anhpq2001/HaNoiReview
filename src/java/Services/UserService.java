@@ -27,7 +27,7 @@ public class UserService {
         String errorMessage;
         String account = request.getParameter("account");
         String password = request.getParameter("password");
-        User user = userDAO.getOne(account, password);
+        User user = userDAO.getOneByAccountAndPassword(account, password);
         if (Objects.isNull(user)) {
             try {
                 errorMessage = "Account or Password incorect!";
@@ -39,11 +39,6 @@ public class UserService {
         } else {
             try {
                 HttpSession session = request.getSession();
-//                if(user.isIsAdmin() == true){
-//                    session.setAttribute("admin", user);
-//                }else{
-//                    session.setAttribute("user", user);
-//                }
                 session.setAttribute("user", user);
                 response.sendRedirect("home");
             } catch (IOException ex) {
