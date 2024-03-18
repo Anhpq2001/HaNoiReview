@@ -134,5 +134,29 @@ public class HomeService {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    public void signIn(HttpServletRequest request, HttpServletResponse response) {
+        String errorMessage;
+        String account = request.getParameter("account");
+        String password = request.getParameter("password");
+        User user = userDAO.getOneByAccountAndPassword(account, password);
+        if (Objects.isNull(user)) { 
+                errorMessage = "Account or Password incorect!";
+                request.setAttribute("errorMessage", errorMessage);
+            try {     
+                request.getRequestDispatcher("/Views/signin.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            
+            try {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                response.sendRedirect("home");
+            } catch (IOException ex) {
+                Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+    }
 }

@@ -67,22 +67,26 @@ public class HomeController extends HttpServlet {
             case "":
                 homeService.displayHome(request, response);
                 break;
-            case "displayalluser":
-                homeService.displayAllUser(request, response);
+            case "signin":
+                homeService.displaySignIn(request, response);
+                break;
+            case "signup":
+                homeService.displaySignup(request, response);
+                break;
+            case "signout":
+                homeService.signout(request, response);
+                break;
+            case "profile":
+                homeService.displayProfile(request, response);
                 break;
             case "displayallpost":
                 homeService.displayAllPost(request, response);
-            case "signin":
-                homeService.displaySignIn(request, response);
-            case "profile":
-                homeService.displayProfile(request, response);
-                break;  
+                break;
             case "postdetail":
                 homeService.displayPostDetail(request, response);
-            case "signout":
-                homeService.signout(request, response);
-            case "signup":
-                homeService.displaySignup(request, response);
+                break;
+            case "displayalluser":
+                homeService.displayAllUser(request, response);
                 break;
         }
     }
@@ -99,10 +103,13 @@ public class HomeController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if(Objects.isNull(action)){
+        if (Objects.isNull(action)) {
             action = "";
         }
         switch (action) {
+            case "signin":
+                homeService.signIn(request, response);
+                break;
             case "comment":
                 homeService.insertComment(request, response);
                 break;

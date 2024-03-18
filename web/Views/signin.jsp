@@ -16,7 +16,7 @@
     </head>
     <body>
         <div class="container-fluid">
-            <form action="user?action=signin" method="post" class="mx-auto">
+            <form action="home?action=signin" method="post" class="mx-auto">
                 <h4 class="text-center">SignIn</h4>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Account</label>
