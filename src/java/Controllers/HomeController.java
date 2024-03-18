@@ -76,7 +76,14 @@ public class HomeController extends HttpServlet {
                 homeService.displaySignIn(request, response);
             case "profile":
                 homeService.displayProfile(request, response);
-                break;    
+                break;  
+            case "postdetail":
+                homeService.displayPostDetail(request, response);
+            case "signout":
+                homeService.signout(request, response);
+            case "signup":
+                homeService.displaySignup(request, response);
+                break;
         }
     }
 

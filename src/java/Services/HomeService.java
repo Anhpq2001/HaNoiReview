@@ -51,18 +51,21 @@ public class HomeService {
                 posts = postDAO.getAll();
                 images = imageDAO.getAll();
                 categories = categoryDAO.getAll();
-                comments = commentDAO.getAll();
                 request.setAttribute("posts", posts);
-//                request.setAttribute("comments", comments);
-//                request.setAttribute("images", images);
                 request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
             if (user.isIsAdmin() == true) {
+                request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
                 // hiển thị trang home của admin
             }
             if (user.isIsAdmin() == false) {
                 // hiển thị trang home của user có đăng nhập
+                posts = postDAO.getAll();
+                images = imageDAO.getAll();
+                categories = categoryDAO.getAll();
+                request.setAttribute("posts", posts);
+                request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
         } catch (ServletException | IOException ex) {
@@ -106,6 +109,30 @@ public class HomeService {
     public void managePost(HttpServletRequest request, HttpServletResponse response) {
         // cho phep admin chinh sua cac noi dung trong bai viet
         // an hoac comment them duoi account admin
+    }
+
+    public void displayPostDetail(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void signout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false); // false để không tạo session mới nếu không tồn tại
+        if (session != null) {
+            session.invalidate(); // Xóa session hiện tại
+        }
+        try {
+            response.sendRedirect("home");
+        } catch (IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void displaySignup(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/Views/signup.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

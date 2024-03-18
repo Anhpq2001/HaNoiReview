@@ -37,6 +37,7 @@
                             <% } %>
                 </div>
                 <button type="submit" class="btn btn-primary">Signin</button>
+                <a href="home?action=signup">Don't account?</a>
             </form>
         </div>
     </body>

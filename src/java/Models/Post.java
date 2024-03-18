@@ -11,6 +11,7 @@ import java.util.Date;
  * @author anhph
  */
 public class Post {
+    private int id;
     private Category category;
     private String title;
     private String content;
@@ -22,6 +23,14 @@ public class Post {
     private String address;
 
     public Post() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Category getCategory() {

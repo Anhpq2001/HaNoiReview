@@ -16,7 +16,7 @@
 
         <title>Home</title>
     </head>
-    <body>  
+    <body>
         <div id="wrapper">
             <div id="header">
                 <a href="url" class="logo">
@@ -32,7 +32,16 @@
                 </div>
                 <div id="actions">
                     <div class="item">
-                        <a href="home?action=signin"><img id="logouser" src="ImageSystem/user.png" alt="alt"/></a>
+                        <c:choose>
+                            <c:when test="${sessionScope.user == null}">
+                                <a href="home?action=signin"><img id="logouser" src="ImageSystem/user.png" alt="alt"/></a>
+                                </c:when>
+                                <c:otherwise>
+                                <a href="home?action=signin">${sessionScope.user.getAccount()}</a>
+                                <a href="home?action=signout"><button class="btn btn-danger">SignOut</button></a>
+                            </c:otherwise>    
+                        </c:choose>
+
                     </div>
                 </div>
             </div>
@@ -50,7 +59,7 @@
                 <div id="menu2">
                     <c:forEach items="${categories}" var="c">
                         <div class="item">
-                            <a href="">${c.getName()}</a>
+                            <a href="home?action=filter">${c.getName()}</a>
                         </div>
                     </c:forEach>
                 </div>
@@ -61,7 +70,7 @@
                         <%-- hien thi danh sach cac bai review duoi dang luoi --%>
                         <div class="item">
                             <img src="ImageSystem/product_1.png" alt="">
-                            <div class="name">${p.getTitle()}</div>
+                            <a href="home?action=postdetail&&id=${p.getId()}"><div class="name">${p.getTitle()}</div></a>
                         </div>
                     </c:forEach>
                 </ul>
@@ -79,6 +88,7 @@
                     <p>Email: admin@gmail.com</p>
                 </div>
             </div>
-        </div>    
+        </div>   
+
     </body>
 </html>
