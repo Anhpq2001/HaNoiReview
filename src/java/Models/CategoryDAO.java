@@ -47,11 +47,11 @@ public class CategoryDAO extends DBContext {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Category category = new Category();
-                category.setName(rs.getString(1));
-                category.setDescription(rs.getString(2));
-                category.setCreatedAt(rs.getDate(3));
-                category.setUpdatedAt(rs.getDate(4));
-                category.setIsDelete(rs.getBoolean(5));
+                category.setName(rs.getString(2));
+                category.setDescription(rs.getString(3));
+                category.setCreatedAt(rs.getDate(4));
+                category.setUpdatedAt(rs.getDate(5));
+                category.setIsDelete(rs.getBoolean(6));
                 categories.add(category);
             }
         } catch (SQLException ex) {
@@ -67,12 +67,12 @@ public class CategoryDAO extends DBContext {
             stm = con.prepareStatement(GET_ONE);
             stm.setInt(1, id);
             rs = stm.executeQuery();
-            if(rs.next()){
-                category.setName(rs.getString(1));
-                category.setDescription(rs.getString(2));
-                category.setCreatedAt(rs.getDate(3));
-                category.setUpdatedAt(rs.getDate(4));
-                category.setIsDelete(rs.getBoolean(5));
+            if (rs.next()) {
+                category.setName(rs.getString(2));
+                category.setDescription(rs.getString(3));
+                category.setCreatedAt(rs.getDate(4));
+                category.setUpdatedAt(rs.getDate(5));
+                category.setIsDelete(rs.getBoolean(6));
                 return category;
             }
         } catch (SQLException ex) {

@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../css/home_style.css"/>
+        <link rel="stylesheet" href="css/home_style.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"><!-- comment -->
 
         <title>Home</title>
@@ -20,7 +20,7 @@
         <div id="wrapper">
             <div id="header">
                 <a href="url" class="logo">
-                    <img src="../ImageSystem/logoproject.jpg" alt="Logo"/>
+                    <img src="ImageSystem/logoproject.jpg" alt="Logo"/>
                 </a>
                 <div id="menu">
                     <div class="item">
@@ -32,7 +32,7 @@
                 </div>
                 <div id="actions">
                     <div class="item">
-                        <img id="logouser" src="../ImageSystem/user.png" alt="alt"/>
+                        <a href="home?action=signin"><img id="logouser" src="ImageSystem/user.png" alt="alt"/></a>
                     </div>
                 </div>
             </div>
@@ -48,26 +48,23 @@
             </div>
             <div id="category">
                 <div id="menu2">
-                    <div class="item">
-                        <a href="">Lịch sử</a>
-                    </div>
-                    <div class="item">
-                        <a href="">Chính trị</a>
-                    </div>
-                    <div class="item">
-                        <a href="">Văn hóa</a>
-                    </div>
-                    <div class="item">
-                        <a href="">Nghệ thuật</a>
-                    </div>
+                    <c:forEach items="${categories}" var="c">
+                        <div class="item">
+                            <a href="">${c.getName()}</a>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
-            <div id="content">
-                <div class="contentitem"><p>Báo Hà Nội</p></div>
-                <div class="contentitem"><p>Báo Thành Phố HCM</p></div>
-                <div class="contentitem"><p>Báo Quân</p></div>
-                <div class="contentitem"><p>Báo Đà Nẵng</p></div>
-                <div class="contentitem"><p>Báo Du Lịch</p></div>
+            <div id="wp-products">
+                <ul id="list-products">
+                    <c:forEach items="${posts}" var="p">
+                        <%-- hien thi danh sach cac bai review duoi dang luoi --%>
+                        <div class="item">
+                            <img src="ImageSystem/product_1.png" alt="">
+                            <div class="name">${p.getTitle()}</div>
+                        </div>
+                    </c:forEach>
+                </ul>
             </div>
             <div id="footer">
                 <div class="box">

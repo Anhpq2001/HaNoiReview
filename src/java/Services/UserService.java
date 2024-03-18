@@ -28,12 +28,12 @@ public class UserService {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
         User user = userDAO.getOneByAccountAndPassword(account, password);
-        if (Objects.isNull(user)) {
-            try {
+        if (Objects.isNull(user)) { 
                 errorMessage = "Account or Password incorect!";
-                //request.setAttribute("errorMessage", errorMessage); // to do
-                response.sendRedirect("home?action=signin");
-            } catch (IOException ex) {
+                request.setAttribute("errorMessage", errorMessage);
+            try {
+                request.getRequestDispatcher("/Views/signin.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
                 Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

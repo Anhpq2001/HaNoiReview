@@ -53,44 +53,18 @@ public class HomeService {
                 categories = categoryDAO.getAll();
                 comments = commentDAO.getAll();
                 request.setAttribute("posts", posts);
-                request.setAttribute("comments", comments);
-                request.setAttribute("images", images);
+//                request.setAttribute("comments", comments);
+//                request.setAttribute("images", images);
                 request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
             if (user.isIsAdmin() == true) {
-                // hien thi trang home cua admin
-                posts = postDAO.getAll();
-                users = userDAO.getAll();
-                images = imageDAO.getAll();
-                categories = categoryDAO.getAll();
-                comments = commentDAO.getAll();
-                request.setAttribute("users", users);
-                request.setAttribute("user", user);
-                request.setAttribute("posts", posts);
-                request.setAttribute("comments", comments);
-                request.setAttribute("images", images);
-                request.setAttribute("categories", categories);
-
+                // hiển thị trang home của admin
             }
             if (user.isIsAdmin() == false) {
-                // hien thi trang home cua user da dang nhap
-                posts = postDAO.getAll();
-                images = imageDAO.getAll();
-                categories = categoryDAO.getAll();
-                comments = commentDAO.getAll();
-                request.setAttribute("posts", posts);
-                request.setAttribute("comments", comments);
-                request.setAttribute("images", images);
-                request.setAttribute("categories", categories);
+                // hiển thị trang home của user có đăng nhập
+                request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
-//            request.setAttribute("users", users);
-//            request.setAttribute("user", user);
-//            request.setAttribute("posts", posts);
-//            request.setAttribute("comments", comments);
-//            request.setAttribute("images", images);
-//            request.setAttribute("categories", categories);
-//            request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -106,6 +80,7 @@ public class HomeService {
 
     public void displaySignIn(HttpServletRequest request, HttpServletResponse response) {
         try {
+            // chuyển được thông báo lỗi qua trang jsp
             request.getRequestDispatcher("/Views/signin.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);

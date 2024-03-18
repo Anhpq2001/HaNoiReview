@@ -3,42 +3,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
 */
 /* 
-    Created on : Mar 10, 2024, 2:29:55 PM
+    Created on : Mar 15, 2024, 4:13:54 AM
     Author     : anhph
 */
 
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 body{
+    background-color: white;
     font-family: 'Poppins', sans-serif;
-    background: #ececec;
 }
-/*------------ Login container ------------*/
-.box-area{
-    width: 930px;
-}
-/*------------ Right box ------------*/
-.right-box{
-    padding: 40px 30px 40px 40px;
-}
-/*------------ Custom Placeholder ------------*/
-::placeholder{
-    font-size: 16px;
-}
-.rounded-4{
+form{
+    width: 24%;
+    background-color: bisque;
+    padding: 50px;
     border-radius: 20px;
+    margin-top: 150px;
 }
-.rounded-5{
-    border-radius: 30px;
-}
-/*------------ For small screens------------*/
-@media only screen and (max-width: 768px){
-     .box-area{
-        margin: 0 10px;
-     }
-     .left-box{
-        height: 100px;
-        overflow: hidden;
-     }
-     .right-box{
-        padding: 20px;
-     }
+.btn-primary{
+    width: 100%;
+    border: none;
 }

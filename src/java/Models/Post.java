@@ -19,6 +19,7 @@ public class Post {
     private int likeCount;
     private int viewCount;
     private boolean isDelete;
+    private String address;
 
     public Post() {
     }
@@ -85,6 +86,14 @@ public class Post {
 
     public void setIsDelete(boolean isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
     
     

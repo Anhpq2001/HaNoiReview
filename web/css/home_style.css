@@ -104,20 +104,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     text-decoration: none;
     margin: 0px 30px;
 }
-#content{
-    margin-top: 30px; 
-    
-}
-#content .contentitem{
-    margin:10px 140px;
-    border: 1px solid #000;
-    border-radius: 20px;
-    
-}
-#content .contentitem p{
-    margin: 5px;
-    margin-left: 20px;
-}
 
 #footer {
     width: 100%;
@@ -142,4 +128,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 #footer .infor{
     color: white;
     margin-right: 50px;
+}
+#wp-products {
+    padding-top:116px;
+    padding-bottom: 78px;
+    padding-left:134px;
+    padding-right:134px;
+}
+#list-products {
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#list-products .item {
+    width: 290px;
+    height: 374px;
+    background:#362f2f;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+#list-products .item img {
+    display: block;
+    margin:0px auto;
+    margin-top:17px;
+}
+#list-products .item .name {
+    text-align: center;
+    color:#fff;
+    font-weight: bold;
+    margin-top:21px;
 }

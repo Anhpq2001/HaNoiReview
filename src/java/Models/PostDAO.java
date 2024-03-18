@@ -16,8 +16,9 @@ import java.util.logging.Logger;
  * @author anhph
  */
 public class PostDAO extends DBContext {
+
     CategoryDAO categoryDAO = new CategoryDAO();
-    
+
     Connection con = connection;
     PreparedStatement stm;
     ResultSet rs;
@@ -31,6 +32,7 @@ public class PostDAO extends DBContext {
             + "      ,[LikeCount]\n"
             + "      ,[ViewCount]\n"
             + "      ,[IsDelete]\n"
+            + "      ,[address]\n"
             + "  FROM [dbo].[Posts]";
     private final String GET_ONE = "SELECT [PostID]\n"
             + "      ,[CategoryID]\n"
@@ -41,6 +43,7 @@ public class PostDAO extends DBContext {
             + "      ,[LikeCount]\n"
             + "      ,[ViewCount]\n"
             + "      ,[IsDelete]\n"
+            + "      ,[address]\n"
             + "  FROM [dbo].[Posts]\n"
             + "  WHERE [PostID]=?";
     private final String INSERT = "";
@@ -52,16 +55,17 @@ public class PostDAO extends DBContext {
         try {
             stm = con.prepareStatement(GET_ALL);
             rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Post post = new Post();
-                post.setCategory(categoryDAO.getOne(rs.getInt(1)));
-                post.setTitle(rs.getString(2));
-                post.setContent(rs.getString(3));
-                post.setCreatedAt(rs.getDate(4));
-                post.setUpdatedAt(rs.getDate(5));
-                post.setLikeCount(rs.getInt(6));
-                post.setViewCount(rs.getInt(7));
-                post.setIsDelete(rs.getBoolean(8));
+                post.setCategory(categoryDAO.getOne(rs.getInt(2)));
+                post.setTitle(rs.getString(3));
+                post.setContent(rs.getString(4));
+                post.setCreatedAt(rs.getDate(5));
+                post.setUpdatedAt(rs.getDate(6));
+                post.setLikeCount(rs.getInt(7));
+                post.setViewCount(rs.getInt(8));
+                post.setIsDelete(rs.getBoolean(9));
+                post.setAddress(rs.getString(10));
                 posts.add(post);
             }
         } catch (SQLException ex) {
@@ -76,15 +80,16 @@ public class PostDAO extends DBContext {
             stm = con.prepareStatement(GET_ONE);
             stm.setInt(1, id);
             rs = stm.executeQuery();
-            if(rs.next()){
-                post.setCategory(categoryDAO.getOne(rs.getInt(1)));
-                post.setTitle(rs.getString(2));
-                post.setContent(rs.getString(3));
-                post.setCreatedAt(rs.getDate(4));
-                post.setUpdatedAt(rs.getDate(5));
-                post.setLikeCount(rs.getInt(6));
-                post.setViewCount(rs.getInt(7));
-                post.setIsDelete(rs.getBoolean(8));
+            if (rs.next()) {
+                post.setCategory(categoryDAO.getOne(rs.getInt(2)));
+                post.setTitle(rs.getString(3));
+                post.setContent(rs.getString(4));
+                post.setCreatedAt(rs.getDate(5));
+                post.setUpdatedAt(rs.getDate(6));
+                post.setLikeCount(rs.getInt(7));
+                post.setViewCount(rs.getInt(8));
+                post.setIsDelete(rs.getBoolean(9));
+                post.setAddress(rs.getString(10));
                 return post;
             }
         } catch (SQLException ex) {

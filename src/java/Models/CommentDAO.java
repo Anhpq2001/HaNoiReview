@@ -56,14 +56,14 @@ public class CommentDAO extends DBContext {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Comment comment = new Comment();
-                comment.setPost(postDAO.getOne(rs.getInt(1)));
-                comment.setUser(userDAO.getOneById(rs.getInt(2)));
-                comment.setParentCommentId(rs.getInt(3));
-                comment.setContent(rs.getString(4));
-                comment.setCreatedAt(rs.getDate(5));
-                comment.setUpdatedAt(rs.getDate(6));
-                comment.setLikeCount(rs.getInt(7));
-                comment.setIsDelete(rs.getBoolean(8));
+                comment.setPost(postDAO.getOne(rs.getInt(2)));
+                comment.setUser(userDAO.getOneById(rs.getInt(3)));
+                comment.setParentCommentId(rs.getInt(4));
+                comment.setContent(rs.getString(5));
+                comment.setCreatedAt(rs.getDate(6));
+                comment.setUpdatedAt(rs.getDate(7));
+                comment.setLikeCount(rs.getInt(8));
+                comment.setIsDelete(rs.getBoolean(9));
                 comments.add(comment);
             }
         } catch (SQLException ex) {
@@ -79,14 +79,14 @@ public class CommentDAO extends DBContext {
             stm.setInt(1, id);
             rs = stm.executeQuery();
             if(rs.next()){
-                comment.setPost(postDAO.getOne(rs.getInt(1)));
-                comment.setUser(userDAO.getOneById(rs.getInt(2)));
-                comment.setParentCommentId(rs.getInt(3));
-                comment.setContent(rs.getString(4));
-                comment.setCreatedAt(rs.getDate(5));
-                comment.setUpdatedAt(rs.getDate(6));
-                comment.setLikeCount(rs.getInt(7));
-                comment.setIsDelete(rs.getBoolean(8));
+                comment.setPost(postDAO.getOne(rs.getInt(2)));
+                comment.setUser(userDAO.getOneById(rs.getInt(3)));
+                comment.setParentCommentId(rs.getInt(4));
+                comment.setContent(rs.getString(5));
+                comment.setCreatedAt(rs.getDate(6));
+                comment.setUpdatedAt(rs.getDate(7));
+                comment.setLikeCount(rs.getInt(8));
+                comment.setIsDelete(rs.getBoolean(9));
             }
         } catch (SQLException ex) {
             Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, null, ex);

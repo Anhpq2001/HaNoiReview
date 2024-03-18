@@ -43,8 +43,8 @@ public class ImageDAO extends DBContext {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Image image = new Image();
-                image.setPost(postDAO.getOne(rs.getInt(1)));
-                image.setImageUrl(rs.getString(2));
+                image.setPost(postDAO.getOne(rs.getInt(2)));
+                image.setImageUrl(rs.getString(3));
                 images.add(image);
             }
         } catch (SQLException ex) {
@@ -57,8 +57,8 @@ public class ImageDAO extends DBContext {
         Image image = new Image();
         try {
             stm = con.prepareStatement(GET_ONE);
-            image.setPost(postDAO.getOne(rs.getInt(1)));
-            image.setImageUrl(rs.getString(2));
+            image.setPost(postDAO.getOne(rs.getInt(2)));
+            image.setImageUrl(rs.getString(3));
             return image;
         } catch (SQLException ex) {
             Logger.getLogger(ImageDAO.class.getName()).log(Level.SEVERE, null, ex);
