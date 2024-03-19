@@ -6,6 +6,7 @@ package Models;
 
 import dal.DBContext;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,7 +78,26 @@ public class UserDAO extends DBContext {
     private final String DELETE = "";
 
     public List<User> getAll() {
-        return null;
+        List<User> users = new ArrayList<>();
+        try {
+            stm = con.prepareStatement(GET_ALL);
+            rs = stm.executeQuery();
+            while(rs.next()){
+                User user = new User();
+                user.setAccount(rs.getString(2));
+                user.setPassword(rs.getString(3));
+                user.setEmail(rs.getString(4));
+                user.setAvatarUrl(rs.getString(5));
+                user.setCreatedAt(rs.getDate(6));
+                user.setUpdatedAt(rs.getDate(7));
+                user.setIsAdmin(rs.getBoolean(8));
+                user.setIsDelete(rs.getBoolean(9));
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return users;
     }
 
     public User getOneById(int id) {

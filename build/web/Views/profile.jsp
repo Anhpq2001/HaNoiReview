@@ -14,7 +14,7 @@
         <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"><!-- comment -->
 
-        <title>JSP Page</title>
+        <title>Profile</title>
     </head>
     <body>
         <div class="wrapper">

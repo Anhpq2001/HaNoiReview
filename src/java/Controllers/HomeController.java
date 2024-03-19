@@ -82,14 +82,14 @@ public class HomeController extends HttpServlet {
             case "changeprofile":
                 homeService.displayChangProfile(request, response);
                 break;
+            case "displayalluser":
+                homeService.displayAllUser(request, response);
+                break;
             case "displayallpost":
                 homeService.displayAllPost(request, response);
                 break;
             case "postdetail":
                 homeService.displayPostDetail(request, response);
-                break;
-            case "displayalluser":
-                homeService.displayAllUser(request, response);
                 break;
         }
     }

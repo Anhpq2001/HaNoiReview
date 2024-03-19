@@ -60,8 +60,8 @@ public class HomeService {
                 request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
             if (user.isIsAdmin() == true) {
-                request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
                 // hiển thị trang home của admin
+                request.getRequestDispatcher("/Views/home_admin.jsp").forward(request, response);
             }
             if (user.isIsAdmin() == false) {
                 // hiển thị trang home của user có đăng nhập
@@ -78,11 +78,27 @@ public class HomeService {
     }
 
     public void displayAllPost(HttpServletRequest request, HttpServletResponse response) {
-        // cho phep admin xem danh sach cac bai post
+        try {
+            // cho phep admin xem danh sach cac bai post da dang
+            List<Post> posts = postDAO.getAll();
+            request.setAttribute("posts", posts);
+            request.setAttribute("users", null);
+            request.getRequestDispatcher("/Views/home_admin.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void displayAllUser(HttpServletRequest request, HttpServletResponse response) {
-        // cho phep admin xem danh sach cac user da dang nhap
+        try {
+            // cho phep admin xem danh sach cac user da dang nhap
+            List<User> users = userDAO.getAll();
+            request.setAttribute("users", users);
+            request.setAttribute("posts", null);
+            request.getRequestDispatcher("/Views/home_admin.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void displaySignIn(HttpServletRequest request, HttpServletResponse response) {
