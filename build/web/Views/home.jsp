@@ -37,7 +37,7 @@
                                 <a href="home?action=signin"><img id="logouser" src="ImageSystem/user.png" alt="alt"/></a>
                                 </c:when>
                                 <c:otherwise>
-                                <a href="home?action=signin">${sessionScope.user.getAccount()}</a>
+                                <a href="home?action=profile">${sessionScope.user.getAccount()}</a>
                                 <a href="home?action=signout"><button class="btn btn-danger">SignOut</button></a>
                             </c:otherwise>    
                         </c:choose>

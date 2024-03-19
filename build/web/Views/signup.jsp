@@ -19,19 +19,59 @@
                 <h4 class="text-center">SignUp</h4>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Account</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="account">
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="account" value="${account}">
+                </div>
+                <div class="mb-3">
+                    <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorAccount") != null) { %>
+                            <%= request.getAttribute("errorAccount") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="password" value="${password}">
+                </div>
+                <div class="mb-3">
+                    <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorPassword") != null) { %>
+                            <%= request.getAttribute("errorPassword") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="repassword">
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="repassword" value="${rePassword}">
+                </div>
+                <div class="mb-3">
+                    <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorRePassword") != null) { %>
+                            <%= request.getAttribute("errorRePassword") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail2" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="email">
+                    <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="email" value="${email}">
+                </div>
+                <div class="mb-3">
+                    <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorEmail") != null) { %>
+                            <%= request.getAttribute("errorEmail") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
+                </div>
+                <div class="mb-3">
+                    <p style="margin-top: 40px; color: blue">
+                            <% if (request.getAttribute("successful") != null) { %>
+                            <%= request.getAttribute("successful") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>     
                 <a href="home?action=signin" >SignIn</a>

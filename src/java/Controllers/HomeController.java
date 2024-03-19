@@ -110,6 +110,9 @@ public class HomeController extends HttpServlet {
             case "signin":
                 homeService.signIn(request, response);
                 break;
+            case "signup":
+                homeService.signUp(request, response);
+                break;
             case "comment":
                 homeService.insertComment(request, response);
                 break;

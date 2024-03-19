@@ -52,7 +52,27 @@ public class UserDAO extends DBContext {
             + "      ,[IsDelete]\n"
             + "  FROM [dbo].[Users]\n"
             + "  WHERE [Account]=? AND [Password]=?";
-    private final String INSERT = "";
+    private final String GET_ONE_BY_ACCOUNT = "SELECT [UserID]\n"
+            + "      ,[Account]\n"
+            + "      ,[Password]\n"
+            + "      ,[Email]\n"
+            + "      ,[AvatarURL]\n"
+            + "      ,[CreatedAt]\n"
+            + "      ,[UpdatedAt]\n"
+            + "      ,[IsAdmin]\n"
+            + "      ,[IsDelete]\n"
+            + "  FROM [dbo].[Users]\n"
+            + "  WHERE [Account]=?";
+    private final String INSERT = "INSERT INTO [dbo].[Users]\n"
+            + "           ([Account]\n"
+            + "           ,[Password]\n"
+            + "           ,[Email]\n"
+            + "           ,[CreatedAt])\n"
+            + "     VALUES\n"
+            + "           (?\n"
+            + "           ,?\n"
+            + "           ,?\n"
+            + "           ,?)";
     private final String UPDATE = "";
     private final String DELETE = "";
 
@@ -60,7 +80,7 @@ public class UserDAO extends DBContext {
         return null;
     }
 
-    public User getOneById(int id){
+    public User getOneById(int id) {
         User user = new User();
         try {
             stm = con.prepareStatement(GET_ONE_BY_ID);
@@ -82,14 +102,39 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
+
     public User getOneByAccountAndPassword(String account, String password) {
-        User user = new User();
         try {
             stm = con.prepareStatement(GET_ONE_BY_ACCOUNT_AND_PASSWORD);
             stm.setString(1, account);
             stm.setString(2, password);
+            
             rs = stm.executeQuery();
             if (rs.next()) {
+                User user = new User();
+                user.setAccount(rs.getString(2));
+                user.setPassword(rs.getString(3));
+                user.setEmail(rs.getString(4));
+                user.setAvatarUrl(rs.getString(5));
+                user.setCreatedAt(rs.getDate(6));
+                user.setUpdatedAt(rs.getDate(7));
+                user.setIsAdmin(rs.getBoolean(8));
+                user.setIsDelete(rs.getBoolean(9));
+                return user;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public User getOneByAccount(String account) {
+        try {
+            stm = con.prepareStatement(GET_ONE_BY_ACCOUNT);
+            stm.setString(1, account);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                User user = new User();
                 user.setAccount(rs.getString(2));
                 user.setPassword(rs.getString(3));
                 user.setEmail(rs.getString(4));
@@ -107,6 +152,16 @@ public class UserDAO extends DBContext {
     }
 
     public void insert(User user) {
+        try {
+            stm = con.prepareStatement(INSERT);
+            stm.setString(1, user.getAccount());
+            stm.setString(2, user.getPassword());
+            stm.setString(3, user.getEmail());
+            stm.setDate(4, (Date) user.getCreatedAt());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void update(User user) {

@@ -36,6 +36,7 @@ public class HomeService {
     CategoryDAO categoryDAO = new CategoryDAO();
     ImageDAO imageDAO = new ImageDAO();
     CommentDAO commentDAO = new CommentDAO();
+    Validate validate = new Validate();
 
     public void displayHome(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -134,21 +135,22 @@ public class HomeService {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public void signIn(HttpServletRequest request, HttpServletResponse response) {
         String errorMessage;
         String account = request.getParameter("account");
         String password = request.getParameter("password");
         User user = userDAO.getOneByAccountAndPassword(account, password);
-        if (Objects.isNull(user)) { 
-                errorMessage = "Account or Password incorect!";
-                request.setAttribute("errorMessage", errorMessage);
-            try {     
+        if (Objects.isNull(user)) {
+            errorMessage = "Account or Password incorect!";
+            request.setAttribute("errorMessage", errorMessage);
+            try {
                 request.getRequestDispatcher("/Views/signin.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
                 Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            
+
             try {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
@@ -156,7 +158,67 @@ public class HomeService {
             } catch (IOException ex) {
                 Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
+        }
+    }
+
+    public void signUp(HttpServletRequest request, HttpServletResponse response) {
+        String account = request.getParameter("account");
+        String password = request.getParameter("password");
+        String rePassword = request.getParameter("repassword");
+        String email = request.getParameter("email");
+        String errorAccount = "";
+        String errorPassword = "";
+        String errorRePassword = "";
+        String errorEmail = "";
+        String successful = "";
+        if (account.isEmpty() || Objects.isNull(account) == true) {
+            errorAccount = "Account is empty!";
+        }
+        if (password.isEmpty() || Objects.isNull(password) == true) {
+            errorPassword = "Password is empty!";
+        }
+        if (rePassword.isEmpty() || Objects.isNull(rePassword) == true) {
+            errorRePassword = "Confirm password is empty!";
+        }
+        if (email.isEmpty() || Objects.isNull(email) == true) {
+            errorEmail = "Email is empty!";
+        }
+        if (validate.isExist(account) == true) {
+            errorAccount = "Account is exsit!";
+        }
+        if (validate.isNotPassword(password) == true) {
+            errorPassword = "Password is must from 8 to 16 digits!";
+        }
+        if (validate.isNotDuplicate(password, rePassword) == true) {
+            errorRePassword = "Must duplicate password!";
+        }
+        if (validate.isNotEmail(email) == false) {
+            errorEmail = "Must format abc@gmail.com!";
+        }
+        if (errorAccount.equals("") && errorPassword.equals("") && errorRePassword.equals("") && errorEmail.equals("")) {
+            // todo khi khong co loi thi thuc hien
+            User user = new User();
+            user.setAccount(account);
+            user.setPassword(password);
+            user.setEmail(email);
+            user.setCreatedAt(validate.getCurrentDate());
+            userDAO.insert(user);
+            successful = "Register successfully!";
+        }
+        request.setAttribute("errorAccount", errorAccount);
+        request.setAttribute("errorPassword", errorPassword);
+        request.setAttribute("errorRePassword", errorRePassword);
+        request.setAttribute("errorEmail", errorEmail);
+        request.setAttribute("successful", successful);
+        request.setAttribute("account", account);
+        request.setAttribute("password", password);
+        request.setAttribute("rePassword", rePassword);
+        request.setAttribute("email", email);
+        try {
+            request.getRequestDispatcher("/Views/signup.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
