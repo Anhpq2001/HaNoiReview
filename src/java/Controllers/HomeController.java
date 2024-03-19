@@ -79,6 +79,9 @@ public class HomeController extends HttpServlet {
             case "profile":
                 homeService.displayProfile(request, response);
                 break;
+            case "changeprofile":
+                homeService.displayChangProfile(request, response);
+                break;
             case "displayallpost":
                 homeService.displayAllPost(request, response);
                 break;
@@ -112,6 +115,9 @@ public class HomeController extends HttpServlet {
                 break;
             case "signup":
                 homeService.signUp(request, response);
+                break;
+            case "changprofile":
+                homeService.changProfile(request, response);
                 break;
             case "comment":
                 homeService.insertComment(request, response);

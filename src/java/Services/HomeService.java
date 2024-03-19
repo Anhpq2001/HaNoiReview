@@ -18,7 +18,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -92,7 +95,12 @@ public class HomeService {
     }
 
     public void displayProfile(HttpServletRequest request, HttpServletResponse response) {
-        // nguoi dung co the xem profile cua ho
+        try {
+            // nguoi dung co the xem profile cua ho
+            request.getRequestDispatcher("/Views/profile.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void insertComment(HttpServletRequest request, HttpServletResponse response) {
@@ -217,6 +225,30 @@ public class HomeService {
         request.setAttribute("email", email);
         try {
             request.getRequestDispatcher("/Views/signup.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void changProfile(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            Part file = request.getPart("avatar");
+            String avartarFileName = file.getSubmittedFileName();
+            String uploadParth = "C:/Users/anhph/OneDrive/Desktop/ReviewHaNoiTour/web/ImageSystem/" + avartarFileName;
+            FileOutputStream fos = new FileOutputStream(uploadParth);
+            InputStream is = file.getInputStream();
+            byte[] data = new byte[is.available()];
+            is.read();
+            fos.write(data);
+            fos.close();
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
+
+    public void displayChangProfile(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/Views/change_profile.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }

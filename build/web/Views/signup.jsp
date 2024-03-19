@@ -76,7 +76,6 @@
                 <button type="submit" class="btn btn-primary">Register</button>     
                 <a href="home?action=signin" >SignIn</a>
             </form>
-            
         </div>
     </body>
 </html>
