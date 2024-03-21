@@ -35,18 +35,54 @@
                     <input type="text" class="form-control" id="title" name="tilte" value="${post.getTitle()}">
                 </div>
                 <div class="form-group">
+                            <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorTitle") != null) { %>
+                            <%= request.getAttribute("errorTitle") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
+                            </p>
+                        </div>
+                <div class="form-group">
                     <label for="content">Content</label>
                     <textarea class="form-control" id="content" rows="3" name="content">${post.getContent()}</textarea>
                 </div>
+                <div class="form-group">
+                            <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorContent") != null) { %>
+                            <%= request.getAttribute("errorContent") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
+                            </p>
+                        </div>
                 <div class="form-group">
                     <label for="address">Address</label>
                     <input type="text" class="form-control" id="address" name="address" value="${post.getAddress()}">
                 </div>
                 <div class="form-group">
+                            <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorAddress") != null) { %>
+                            <%= request.getAttribute("errorAddress") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
+                            </p>
+                        </div>
+                <div class="form-group">
                     <label for="image">Image</label>
                     <input type="file" class="form-control-file" id="image" name="image" onchange="previewImage()">
                     <img id="preview" src="${image.getImageUrl()}" alt="Preview Image" style="max-width: 100%; margin-top: 10px; display: none;">
                 </div>
+                <div class="form-group">
+                            <p style="margin-top: 40px; color: red">
+                            <% if (request.getAttribute("errorImage") != null) { %>
+                            <%= request.getAttribute("errorImage") %>
+                            <% } else { %>
+                            <%=""%>
+                            <% } %>
+                            </p>
+                        </div>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>

@@ -82,7 +82,7 @@ public class HomeService {
     public void displayAllPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             // cho phep admin xem danh sach cac bai post da dang
-            List<Post> posts = postDAO.getAll();
+            List<Post> posts = postDAO.getAllAdmin();
             request.setAttribute("posts", posts);
             request.setAttribute("users", null);
             request.setAttribute("categories", null);
@@ -124,7 +124,28 @@ public class HomeService {
     }
 
     public void insertComment(HttpServletRequest request, HttpServletResponse response) {
-        // them comment khi nguoi dung comment
+        try {
+            String parentId = request.getParameter("parentid");
+            String userId = request.getParameter("userid");
+            String content = request.getParameter("comment");
+            String postId = request.getParameter("postid");
+            Comment comment = new Comment();
+            comment.setPost(postDAO.getOne(Integer.parseInt(postId)));
+            comment.setUser(userDAO.getOneById(Integer.parseInt(userId)));
+            comment.setParentCommentId(Integer.parseInt(parentId));
+            comment.setContent(content);
+            comment.setCreatedAt(validate.getCurrentDate());
+            commentDAO.insert(comment);
+            Post post = postDAO.getOne(Integer.parseInt(postId));
+            Image image = imageDAO.getOneByPostId(Integer.parseInt(postId));
+            List<Comment> comments = commentDAO.getAllCommentByPostId(Integer.parseInt(postId));
+            request.setAttribute("post", post);
+            request.setAttribute("image", image);
+            request.setAttribute("comments", comments);
+            request.getRequestDispatcher("/Views/post_detail.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void insertPost(HttpServletRequest request, HttpServletResponse response) {
@@ -137,35 +158,63 @@ public class HomeService {
             String address = request.getParameter("address");
             Part filePart = request.getPart("image");
             String fileName = filePart.getSubmittedFileName();
-            for (Part part : request.getParts()) {
-                part.write("C:\\Users\\anhph\\OneDrive\\Desktop\\ReviewHaNoiTour\\web\\ImageSystem\\" + fileName);
+            String errorTitle = "";
+            String errorContent = "";
+            String errorAddress = "";
+            String errorImage = "";
+
+            if (title.isEmpty() == true || Objects.isNull(title)) {
+                errorTitle = "Title is empty!";
             }
-            String parthImage = "ImageSystem/" + fileName;
-            // Tạo một đối tượng Post mới và đặt các thuộc tính
-            Post post = new Post();
-            post.setTitle(title);
-            post.setContent(content);
-            post.setAddress(address);
-            post.setCategory(categoryDAO.getOne(Integer.parseInt(category)));
-            post.setCreatedAt(validate.getCurrentDate());
-            postDAO.insert(post);
-            Image image = new Image();
-            image.setPost(postDAO.getOneByTitle(title)); // doi tuong dang bị null
-            image.setImageUrl(parthImage);
-            imageDAO.insert(image);
-            displayAllPost(request, response);
+            if (content.isEmpty() == true || Objects.isNull(content)) {
+                errorContent = "Content is empty!";
+            }
+            if (address.isEmpty() == true || Objects.isNull(address)) {
+                errorAddress = "Address is empty!";
+            }
+            if (filePart == null || Objects.isNull(filePart)) {
+                errorImage = "Image is empty!";
+            }
+            if (validate.isExistTitle(title)) {
+                errorTitle = "Title is exist!";
+            }
+            if (errorTitle.equals("") && errorContent.equals("") && errorAddress.equals("") && errorImage.equals("")) {
+                for (Part part : request.getParts()) {
+                    part.write("C:\\Users\\anhph\\OneDrive\\Desktop\\ReviewHaNoiTour\\web\\ImageSystem\\" + fileName);
+                }
+                String parthImage = "ImageSystem/" + fileName;
+                Post post = new Post();
+                post.setTitle(title);
+                post.setContent(content);
+                post.setAddress(address);
+                post.setCategory(categoryDAO.getOne(Integer.parseInt(category)));
+                post.setCreatedAt(validate.getCurrentDate());
+                postDAO.insert(post);
+                Image image = new Image();
+                image.setPost(postDAO.getOneByTitle(title));
+                image.setImageUrl(parthImage);
+                imageDAO.insert(image);
+                displayAllPost(request, response);
+            }
+            request.setAttribute("errorTitle", errorTitle);
+            request.setAttribute("errorContent", errorContent);
+            request.setAttribute("errorImage", errorImage);
+            request.setAttribute("errorAddress", errorAddress);
+            displayNewPost(request, response);
         } catch (IOException | ServletException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void displayPostDetail(HttpServletRequest request, HttpServletResponse response) {
         try {
             String posiId = request.getParameter("id");
             Post post = postDAO.getOne(Integer.parseInt(posiId));
             Image image = imageDAO.getOneByPostId(Integer.parseInt(posiId));
+            List<Comment> comments = commentDAO.getAllCommentByPostId(Integer.parseInt(posiId));
             request.setAttribute("post", post);
             request.setAttribute("image", image);
+            request.setAttribute("comments", comments);
             request.getRequestDispatcher("/Views/post_detail.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
@@ -198,7 +247,7 @@ public class HomeService {
         String password = request.getParameter("password");
         User user = userDAO.getOneByAccountAndPassword(account, password);
         if (Objects.isNull(user)) {
-            errorMessage = "Account or Password incorect!";
+            errorMessage = "Account or Password incorect, or is unactive!";
             request.setAttribute("errorMessage", errorMessage);
             try {
                 request.getRequestDispatcher("/Views/signin.jsp").forward(request, response);
@@ -338,6 +387,27 @@ public class HomeService {
             String address = request.getParameter("address");
             String postId = request.getParameter("id");
             Part filePart = request.getPart("image");
+            String errorTitle = "";
+            String errorContent = "";
+            String errorAddress = "";
+            String errorImage = "";
+            
+            if (title.isEmpty() == true || Objects.isNull(title)) {
+                errorTitle = "Title is empty!";
+            }
+            if (content.isEmpty() == true || Objects.isNull(content)) {
+                errorContent = "Content is empty!";
+            }
+            if (address.isEmpty() == true || Objects.isNull(address)) {
+                errorAddress = "Address is empty!";
+            }
+            if (filePart == null || Objects.isNull(filePart)) {
+                errorImage = "Image is empty!";
+            }
+            if (validate.isExistTitle(title) && !title.equals(postDAO.getOne(Integer.parseInt(postId)).getTitle())) {
+                errorTitle = "Title is exist!";
+            }
+            if (errorTitle.equals("") && errorContent.equals("") && errorAddress.equals("") && errorImage.equals("")){
             String fileName = filePart.getSubmittedFileName();
             for (Part part : request.getParts()) {
                 part.write("C:\\Users\\anhph\\OneDrive\\Desktop\\ReviewHaNoiTour\\web\\ImageSystem\\" + fileName);
@@ -352,26 +422,41 @@ public class HomeService {
             post.setAddress(address);
             post.setUpdatedAt(validate.getCurrentDate());
             postDAO.update(post);
-            
+
             // good case update urlimage
             Image image = new Image();
             image.setImageUrl(parthImage);
             imageDAO.updateByPostId(Integer.parseInt(postId), image);
             displayAllPost(request, response);
+            }
+            request.setAttribute("errorTitle", errorTitle);
+            request.setAttribute("errorContent", errorContent);
+            request.setAttribute("errorImage", errorImage);
+            request.setAttribute("errorAddress", errorAddress);
+            Post post = new Post();
+            post.setAddress(address);
+            post.setContent(content);
+            post.setTitle(title);
+            post.setId(Integer.parseInt(postId));
+            post.setCategory(categoryDAO.getOne(Integer.parseInt(category)));
+            List<Category> categories = categoryDAO.getAll();
+            request.setAttribute("post", post);
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/Views/edit_post.jsp").forward(request, response);
         } catch (IOException | ServletException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     public void editStatusUser(HttpServletRequest request, HttpServletResponse response) {
         String account = request.getParameter("account");
         String status = request.getParameter("status");
         User user = new User();
-        if(status.equals("active")){
+        if (status.equals("active")) {
             user.setIsDelete(false);
         }
-        if(status.equals("unactive")){
+        if (status.equals("unactive")) {
             user.setIsDelete(true);
         }
         userDAO.updateIsDeleteByAccount(user, account);
@@ -402,5 +487,59 @@ public class HomeService {
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void displayEditStatusPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String postId = request.getParameter("id");
+            Post post = postDAO.getOne(Integer.parseInt(postId));
+            Image image = imageDAO.getOneByPostId(Integer.parseInt(postId));
+            List<Comment> comments = commentDAO.getAllCommentByPostIdForAdmin(Integer.parseInt(postId));
+            request.setAttribute("post", post);
+            request.setAttribute("image", image);
+            request.setAttribute("comments", comments);
+            request.getRequestDispatcher("/Views/post_detail_admin.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void manageStatusComment(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String status = request.getParameter("status");
+            String commentId = request.getParameter("commentid");
+            String postId = request.getParameter("postid");
+            Comment comment = new Comment();
+            if (status.equals("1")) {
+                comment.setIsDelete(false);
+            }
+            if (status.equals("0")) {
+                comment.setIsDelete(true);
+            }
+            commentDAO.updateById(Integer.parseInt(commentId), comment);
+            Post post = postDAO.getOne(Integer.parseInt(postId));
+            Image image = imageDAO.getOneByPostId(Integer.parseInt(postId));
+            List<Comment> comments = commentDAO.getAllCommentByPostIdForAdmin(Integer.parseInt(postId));
+            request.setAttribute("post", post);
+            request.setAttribute("image", image);
+            request.setAttribute("comments", comments);
+            request.getRequestDispatcher("/Views/post_detail_admin.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void manageStatusPost(HttpServletRequest request, HttpServletResponse response) {
+        String status = request.getParameter("status");
+        String postId = request.getParameter("postid");
+        Post post = new Post();
+        if(status.equals("1")){
+            post.setIsDelete(false);
+        }
+        if(status.equals("0")){
+            post.setIsDelete(true);
+        }
+        postDAO.updateByStatus(Integer.parseInt(postId), post);
+        displayAllPost(request, response);
     }
 }

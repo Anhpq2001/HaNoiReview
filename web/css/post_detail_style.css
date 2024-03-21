@@ -1,0 +1,84 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 21, 2024, 4:22:08 PM
+    Author     : anhph
+*/
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    max-width: 800px;
+    border-radius: 10px;
+}
+.title{
+    margin-top: 40px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center
+}
+.information{
+    display: flex;
+    justify-content: center
+}
+.information h5{
+    margin: 5px;
+}
+.image{
+   width: 700px;
+   height: 400px;
+   margin-bottom: 100px;
+   margin-top: 40px;
+   margin-left: 300px;
+   margin-right: 300px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.image img{
+    width: 100%; /* Ảnh sẽ chiếm toàn bộ chiều rộng của div */
+    height: 100%; /* Ảnh sẽ chiếm toàn bộ chiều cao của div */
+}
+.content{
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+/* CSS cho phần comment */
+.comment {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+/* CSS cho tiêu đề comment */
+.comment h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+/* CSS cho input */
+.comment .item input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Đảm bảo rằng padding và border không làm tăng kích thước của input */
+    margin-bottom: 5px;
+}
+
+/* CSS cho comment con */
+.comment .item.child {
+    margin-left: 20px;
+}
+
+
+
+
+
+
+
+

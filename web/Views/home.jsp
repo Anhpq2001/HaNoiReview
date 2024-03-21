@@ -69,12 +69,14 @@
                     <c:forEach items="${posts}" var="p">
                         <%-- hien thi danh sach cac bai review duoi dang luoi --%>
                         <div class="item">
+
                             <c:forEach var="image" items="${images}">
                                 <c:if test="${image.getPost().getId() eq p.getId()}">
                                     <!-- Hiển thị ảnh -->
                                     <img src="${image.getImageUrl()}" alt="">
                                 </c:if>
                             </c:forEach>
+
                             <a href="home?action=postdetail&&id=${p.getId()}"><div class="name">${p.getTitle()}</div></a>
                         </div>
                     </c:forEach>

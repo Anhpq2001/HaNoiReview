@@ -11,6 +11,7 @@ import java.util.Date;
  * @author anhph
  */
 public class Comment {
+    private int id;
     private Post post;
     private User user;
     private int parentCommentId;
@@ -27,6 +28,15 @@ public class Comment {
         return post;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
     public void setPost(Post post) {
         this.post = post;
     }

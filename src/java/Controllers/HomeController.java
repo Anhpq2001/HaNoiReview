@@ -110,6 +110,15 @@ public class HomeController extends HttpServlet {
             case "postdetail":
                 homeService.displayPostDetail(request, response);
                 break;
+            case "displayEditStatusPost":
+                homeService.displayEditStatusPost(request, response);
+                break;
+            case "managestatus":
+                homeService.manageStatusComment(request, response);
+                break;
+            case "managestatuspost":
+                homeService.manageStatusPost(request, response);
+                break;
         }
     }
 

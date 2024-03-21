@@ -11,6 +11,7 @@ import java.util.Date;
  * @author anhph
  */
 public class User {
+    private int id;
     private String account;
     private String password;
     private String email;
@@ -27,6 +28,15 @@ public class User {
         return account;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     public void setAccount(String account) {
         this.account = account;
     }

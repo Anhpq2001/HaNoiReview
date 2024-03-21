@@ -52,7 +52,7 @@ public class UserDAO extends DBContext {
             + "      ,[IsAdmin]\n"
             + "      ,[IsDelete]\n"
             + "  FROM [dbo].[Users]\n"
-            + "  WHERE [Account]=? AND [Password]=?";
+            + "  WHERE [Account]=? AND [Password]=? AND [IsDelete]=0";
     private final String GET_ONE_BY_ACCOUNT = "SELECT [UserID]\n"
             + "      ,[Account]\n"
             + "      ,[Password]\n"
@@ -87,6 +87,7 @@ public class UserDAO extends DBContext {
             rs = stm.executeQuery();
             while (rs.next()) {
                 User user = new User();
+                user.setId(rs.getInt(1));
                 user.setAccount(rs.getString(2));
                 user.setPassword(rs.getString(3));
                 user.setEmail(rs.getString(4));
@@ -110,6 +111,7 @@ public class UserDAO extends DBContext {
             stm.setInt(1, id);
             rs = stm.executeQuery();
             if (rs.next()) {
+                user.setId(rs.getInt(1));
                 user.setAccount(rs.getString(2));
                 user.setPassword(rs.getString(3));
                 user.setEmail(rs.getString(4));
@@ -135,6 +137,7 @@ public class UserDAO extends DBContext {
             rs = stm.executeQuery();
             if (rs.next()) {
                 User user = new User();
+                user.setId(rs.getInt(1));
                 user.setAccount(rs.getString(2));
                 user.setPassword(rs.getString(3));
                 user.setEmail(rs.getString(4));
@@ -158,6 +161,7 @@ public class UserDAO extends DBContext {
             rs = stm.executeQuery();
             if (rs.next()) {
                 User user = new User();
+                user.setId(rs.getInt(1));
                 user.setAccount(rs.getString(2));
                 user.setPassword(rs.getString(3));
                 user.setEmail(rs.getString(4));

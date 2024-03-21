@@ -4,6 +4,8 @@
  */
 package Services;
 
+import Models.Post;
+import Models.PostDAO;
 import Models.User;
 import Models.UserDAO;
 import java.time.LocalDate;
@@ -19,10 +21,19 @@ import java.util.regex.Pattern;
 public class Validate {
 
     UserDAO userDAO = new UserDAO();
-
+    PostDAO postDAO = new PostDAO();
+    
     boolean isExist(String account) {
         User user = userDAO.getOneByAccount(account);
         if (Objects.isNull(user)) {
+            return false;
+        }
+        return true;
+    }
+    
+    boolean isExistTitle(String title){
+        Post post = postDAO.getOneByTitle(title);
+        if(Objects.isNull(post)){
             return false;
         }
         return true;
