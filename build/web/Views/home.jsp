@@ -19,7 +19,7 @@
     <body>
         <div id="wrapper">
             <div id="header">
-                <a href="url" class="logo">
+                <a href="home" class="logo">
                     <img src="ImageSystem/logoproject.jpg" alt="Logo"/>
                 </a>
                 <div id="menu">
