@@ -56,6 +56,7 @@ public class HomeService {
                 images = imageDAO.getAll();
                 categories = categoryDAO.getAll();
                 request.setAttribute("posts", posts);
+                request.setAttribute("images", images);
                 request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
@@ -69,6 +70,7 @@ public class HomeService {
                 images = imageDAO.getAll();
                 categories = categoryDAO.getAll();
                 request.setAttribute("posts", posts);
+                request.setAttribute("images", images);
                 request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
             }
@@ -83,6 +85,7 @@ public class HomeService {
             List<Post> posts = postDAO.getAll();
             request.setAttribute("posts", posts);
             request.setAttribute("users", null);
+            request.setAttribute("categories", null);
             request.getRequestDispatcher("/Views/home_admin.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,6 +98,7 @@ public class HomeService {
             List<User> users = userDAO.getAll();
             request.setAttribute("users", users);
             request.setAttribute("posts", null);
+            request.setAttribute("categories", null);
             request.getRequestDispatcher("/Views/home_admin.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,20 +128,48 @@ public class HomeService {
     }
 
     public void insertPost(HttpServletRequest request, HttpServletResponse response) {
-        // them post khi admin muon them post moi
+        try {
+            // them post khi admin muon them post moi
+            // Lấy thông tin từ request
+            String category = request.getParameter("category");
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+            String address = request.getParameter("address");
+            Part filePart = request.getPart("image");
+            String fileName = filePart.getSubmittedFileName();
+            for (Part part : request.getParts()) {
+                part.write("C:\\Users\\anhph\\OneDrive\\Desktop\\ReviewHaNoiTour\\web\\ImageSystem\\" + fileName);
+            }
+            String parthImage = "ImageSystem/" + fileName;
+            // Tạo một đối tượng Post mới và đặt các thuộc tính
+            Post post = new Post();
+            post.setTitle(title);
+            post.setContent(content);
+            post.setAddress(address);
+            post.setCategory(categoryDAO.getOne(Integer.parseInt(category)));
+            post.setCreatedAt(validate.getCurrentDate());
+            postDAO.insert(post);
+            Image image = new Image();
+            image.setPost(postDAO.getOneByTitle(title)); // doi tuong dang bị null
+            image.setImageUrl(parthImage);
+            imageDAO.insert(image);
+            displayAllPost(request, response);
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
-    public void manageUser(HttpServletRequest request, HttpServletResponse response) {
-        // cho phep admin thay doi trang thai nguoi dung(vo hieu hoa hay khong)
-    }
-
-    public void managePost(HttpServletRequest request, HttpServletResponse response) {
-        // cho phep admin chinh sua cac noi dung trong bai viet
-        // an hoac comment them duoi account admin
-    }
-
+    
     public void displayPostDetail(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String posiId = request.getParameter("id");
+            Post post = postDAO.getOne(Integer.parseInt(posiId));
+            Image image = imageDAO.getOneByPostId(Integer.parseInt(posiId));
+            request.setAttribute("post", post);
+            request.setAttribute("image", image);
+            request.getRequestDispatcher("/Views/post_detail.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void signout(HttpServletRequest request, HttpServletResponse response) {
@@ -259,12 +291,114 @@ public class HomeService {
             fos.close();
         } catch (IOException | ServletException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
     }
 
     public void displayChangProfile(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.getRequestDispatcher("/Views/change_profile.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void displayNewPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            List<Category> categories = categoryDAO.getAll();
+            request.setAttribute("posts", null);
+            request.setAttribute("users", null);
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/Views/home_admin.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void displayEditPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String id_raw = request.getParameter("id");
+            int id = Integer.parseInt(id_raw);
+            Post post = postDAO.getOne(id);
+            Image image = imageDAO.getOneByPostId(id);
+            List<Category> categories = categoryDAO.getAll();
+            request.setAttribute("post", post);
+            request.setAttribute("image", image);
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/Views/edit_post.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editInforPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String category = request.getParameter("category");
+            String title = request.getParameter("tilte");
+            String content = request.getParameter("content");
+            String address = request.getParameter("address");
+            String postId = request.getParameter("id");
+            Part filePart = request.getPart("image");
+            String fileName = filePart.getSubmittedFileName();
+            for (Part part : request.getParts()) {
+                part.write("C:\\Users\\anhph\\OneDrive\\Desktop\\ReviewHaNoiTour\\web\\ImageSystem\\" + fileName);
+            }
+            String parthImage = "ImageSystem/" + fileName;
+            // good case update post
+            Post post = new Post();
+            post.setId(Integer.parseInt(postId));
+            post.setCategory(categoryDAO.getOne(Integer.parseInt(category)));
+            post.setTitle(title);
+            post.setContent(content);
+            post.setAddress(address);
+            post.setUpdatedAt(validate.getCurrentDate());
+            postDAO.update(post);
+            
+            // good case update urlimage
+            Image image = new Image();
+            image.setImageUrl(parthImage);
+            imageDAO.updateByPostId(Integer.parseInt(postId), image);
+            displayAllPost(request, response);
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    public void editStatusUser(HttpServletRequest request, HttpServletResponse response) {
+        String account = request.getParameter("account");
+        String status = request.getParameter("status");
+        User user = new User();
+        if(status.equals("active")){
+            user.setIsDelete(false);
+        }
+        if(status.equals("unactive")){
+            user.setIsDelete(true);
+        }
+        userDAO.updateIsDeleteByAccount(user, account);
+        displayAllUser(request, response);
+    }
+
+    public void filter(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String idCategory = request.getParameter("id");
+            List<Category> categories = categoryDAO.getAll();
+            List<Post> posts = postDAO.getAllByCategoryId(Integer.parseInt(idCategory));
+            List<Image> images = imageDAO.getAll();
+            request.setAttribute("categories", categories);
+            request.setAttribute("posts", posts);
+            request.setAttribute("images", images);
+            request.getRequestDispatcher("/Views/home.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void dislpayDetailUser(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String account = request.getParameter("account");
+            User user = userDAO.getOneByAccount(account);
+            request.setAttribute("account", user);
+            request.getRequestDispatcher("/Views/displaydetailuser.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(HomeService.class.getName()).log(Level.SEVERE, null, ex);
         }

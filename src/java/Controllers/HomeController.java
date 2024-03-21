@@ -8,6 +8,7 @@ import Services.HomeService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,9 @@ import java.util.Objects;
  *
  * @author anhph
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 50, // 50MB
+        maxRequestSize = 1024 * 1024 * 50)
 public class HomeController extends HttpServlet {
 
     HomeService homeService = new HomeService();
@@ -88,6 +92,21 @@ public class HomeController extends HttpServlet {
             case "displayallpost":
                 homeService.displayAllPost(request, response);
                 break;
+            case "displaynewpost":
+                homeService.displayNewPost(request, response);
+                break;
+            case "displayEditPost":
+                homeService.displayEditPost(request, response);
+                break;
+            case "filter":
+                homeService.filter(request, response);
+                break;
+            case "editstatususer":
+                homeService.editStatusUser(request, response);
+                break;
+            case "dislpaydetailuser":
+                homeService.dislpayDetailUser(request, response);
+                break;
             case "postdetail":
                 homeService.displayPostDetail(request, response);
                 break;
@@ -122,14 +141,11 @@ public class HomeController extends HttpServlet {
             case "comment":
                 homeService.insertComment(request, response);
                 break;
-            case "post":
+            case "newpost":
                 homeService.insertPost(request, response);
                 break;
-            case "manageuser":
-                homeService.manageUser(request, response);
-                break;
-            case "managepost":
-                homeService.managePost(request, response);
+            case "editinforpost":
+                homeService.editInforPost(request, response);
                 break;
         }
     }

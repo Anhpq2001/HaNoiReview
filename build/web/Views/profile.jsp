@@ -48,9 +48,10 @@
                         </div>
                         <div class="data">
                             <a href="home"><button class="btn btn-primary">Close</button></a>
-<!--                            <a href="home?action=changeprofile"><button class="btn btn-warning">Edit Profile</button></a>-->
+                            <!--                            <a href="home?action=changeprofile"><button class="btn btn-warning">Edit Profile</button></a>-->
                         </div>
                     </div>
                 </div>
-                </body>
-                </html>
+            </div>
+    </body>
+</html>

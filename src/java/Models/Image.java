@@ -9,10 +9,19 @@ package Models;
  * @author anhph
  */
 public class Image {
+    private int id;
     private Post post;
     private String imageUrl;
 
     public Image() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Post getPost() {

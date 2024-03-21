@@ -47,6 +47,7 @@ public class CategoryDAO extends DBContext {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Category category = new Category();
+                category.setId(rs.getInt(1));
                 category.setName(rs.getString(2));
                 category.setDescription(rs.getString(3));
                 category.setCreatedAt(rs.getDate(4));
@@ -68,6 +69,7 @@ public class CategoryDAO extends DBContext {
             stm.setInt(1, id);
             rs = stm.executeQuery();
             if (rs.next()) {
+                category.setId(rs.getInt(1));
                 category.setName(rs.getString(2));
                 category.setDescription(rs.getString(3));
                 category.setCreatedAt(rs.getDate(4));

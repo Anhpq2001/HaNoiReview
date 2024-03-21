@@ -1,0 +1,15 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 21, 2024, 10:52:42 AM
+    Author     : anhph
+*/
+
+.container {
+    max-width: 600px; /* Độ rộng tối đa của container */
+}
+.form-group{
+    width: 600px;
+}

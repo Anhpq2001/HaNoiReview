@@ -74,6 +74,9 @@ public class UserDAO extends DBContext {
             + "           ,?\n"
             + "           ,?\n"
             + "           ,?)";
+    private final String UPDATE_ISDELETE_BY_ACCOUNT = "UPDATE [dbo].[Users]\n"
+            + "   SET [IsDelete] = ?\n"
+            + " WHERE [Account]=?";
     private final String UPDATE = "";
     private final String DELETE = "";
 
@@ -82,7 +85,7 @@ public class UserDAO extends DBContext {
         try {
             stm = con.prepareStatement(GET_ALL);
             rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 User user = new User();
                 user.setAccount(rs.getString(2));
                 user.setPassword(rs.getString(3));
@@ -128,7 +131,7 @@ public class UserDAO extends DBContext {
             stm = con.prepareStatement(GET_ONE_BY_ACCOUNT_AND_PASSWORD);
             stm.setString(1, account);
             stm.setString(2, password);
-            
+
             rs = stm.executeQuery();
             if (rs.next()) {
                 User user = new User();
@@ -188,5 +191,16 @@ public class UserDAO extends DBContext {
     }
 
     public void delete(int id) {
+    }
+
+    public void updateIsDeleteByAccount(User user, String account) {
+        try {
+            stm = con.prepareStatement(UPDATE_ISDELETE_BY_ACCOUNT);
+            stm.setBoolean(1, user.isIsDelete());
+            stm.setString(2, account);
+            stm.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

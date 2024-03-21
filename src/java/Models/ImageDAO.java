@@ -32,7 +32,19 @@ public class ImageDAO extends DBContext {
             + "      ,[ImageURL]\n"
             + "  FROM [dbo].[Images]\n"
             + "  WHERE [ImageID]=?";
-    private final String INSERT = "";
+    private final String INSERT = "INSERT INTO [dbo].[Images]\n"
+            + "           ([PostID]\n"
+            + "           ,[ImageURL])\n"
+            + "     VALUES\n"
+            + "           (?,?)";
+    private final String GET_ONE_BY_POSTID = "SELECT [ImageID]\n"
+            + "      ,[PostID]\n"
+            + "      ,[ImageURL]\n"
+            + "  FROM [dbo].[Images]\n"
+            + "  WHERE [PostID]=?";
+    private final String UPDATE_BY_POSTID = "UPDATE [dbo].[Images]\n"
+            + "   SET [ImageURL] = ?\n"
+            + " WHERE [PostID] =?";
     private final String UPDATE = "";
     private final String DELETE = "";
 
@@ -43,6 +55,7 @@ public class ImageDAO extends DBContext {
             rs = stm.executeQuery();
             while (rs.next()) {
                 Image image = new Image();
+                image.setId(rs.getInt(1));
                 image.setPost(postDAO.getOne(rs.getInt(2)));
                 image.setImageUrl(rs.getString(3));
                 images.add(image);
@@ -57,6 +70,7 @@ public class ImageDAO extends DBContext {
         Image image = new Image();
         try {
             stm = con.prepareStatement(GET_ONE);
+            image.setId(rs.getInt(1));
             image.setPost(postDAO.getOne(rs.getInt(2)));
             image.setImageUrl(rs.getString(3));
             return image;
@@ -67,11 +81,48 @@ public class ImageDAO extends DBContext {
     }
 
     public void insert(Image image) {
+        try {
+            stm = con.prepareStatement(INSERT);
+            stm.setInt(1, image.getPost().getId());
+            stm.setString(2, image.getImageUrl());
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ImageDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void update(Image image) {
     }
 
     public void delete(int id) {
+    }
+
+    public Image getOneByPostId(int id) {
+        Image image = new Image();
+        try {
+            stm = con.prepareStatement(GET_ONE_BY_POSTID);
+            stm.setInt(1, id);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                image.setId(rs.getInt(1));
+                image.setPost(postDAO.getOne(rs.getInt(2)));
+                image.setImageUrl(rs.getString(3));
+                return image;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ImageDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void updateByPostId(int id, Image image) {
+        try {
+            stm = con.prepareStatement(UPDATE_BY_POSTID);
+            stm.setString(1, image.getImageUrl());
+            stm.setInt(2, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ImageDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

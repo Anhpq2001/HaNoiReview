@@ -59,7 +59,7 @@
                 <div id="menu2">
                     <c:forEach items="${categories}" var="c">
                         <div class="item">
-                            <a href="home?action=filter">${c.getName()}</a>
+                            <a href="home?action=filter&&id=${c.getId()}">${c.getName()}</a>
                         </div>
                     </c:forEach>
                 </div>
@@ -69,7 +69,12 @@
                     <c:forEach items="${posts}" var="p">
                         <%-- hien thi danh sach cac bai review duoi dang luoi --%>
                         <div class="item">
-                            <img src="ImageSystem/product_1.png" alt="">
+                            <c:forEach var="image" items="${images}">
+                                <c:if test="${image.getPost().getId() eq p.getId()}">
+                                    <!-- Hiển thị ảnh -->
+                                    <img src="${image.getImageUrl()}" alt="">
+                                </c:if>
+                            </c:forEach>
                             <a href="home?action=postdetail&&id=${p.getId()}"><div class="name">${p.getTitle()}</div></a>
                         </div>
                     </c:forEach>
